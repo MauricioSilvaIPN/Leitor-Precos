@@ -5,5 +5,12 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="LeitorPrecos.MainWindow"
         Title="LeitorPrecos">
-    Welcome to Avalonia!
+    
+        <StackPanel>
+            <UserControl Padding="20" HorizontalAlignment="Center">
+                <Button Click="GettingFileRead">
+                    Click Me
+                </Button>
+            </UserControl>
+        </StackPanel>
 </Window>
