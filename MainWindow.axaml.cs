@@ -18,7 +18,7 @@ public partial class MainWindow : Window
 
     public void GettingFileRead(object sender, RoutedEventArgs args)
     {
-        string path = @"/home/mauricio/Downloads/Planilha Teste - Produtos e Preços(Planilha1).csv";
+        string path = Input.Text;
 
         if (File.Exists(path))
         {
@@ -36,7 +36,7 @@ public partial class MainWindow : Window
 
         else
         {
-            Console.WriteLine("ERROR: THE CURRENT FILE PATH DOES NOT EXISTS");
+            Console.WriteLine("ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE");
         }
         
     }

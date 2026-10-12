@@ -7,10 +7,16 @@
         Title="LeitorPrecos">
     
         <StackPanel>
-            <UserControl Padding="20" HorizontalAlignment="Center">
+            <Grid x:Name="Container" RowDefinitions="Auto, *" Margin="15,20,0,15">
+                <TextBox x:Name="Input" PlaceholderText="Digite o caminho do arquivo aqui" Width="450"></TextBox>
+                
                 <Button Click="GettingFileRead">
-                    Click Me
+                    Carregar Dados
                 </Button>
-            </UserControl>
+            </Grid>
+
+            <Grid x:Name="DataContainer">
+
+            </Grid>
         </StackPanel>
 </Window>
