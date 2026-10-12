@@ -29,18 +29,40 @@ public partial class MainWindow : Window
                 while (fs.Read(b, 0, b.Length) > 0)
                 {
                    textReference.Text = temp.GetString(b);
+                   CreatingButton();
                 }
             }
         }
 
         else
         {
-            textReference.Text = "ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE";
-            Console.WriteLine("ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE");
+            textReference.Text = "ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE OU ESTÁ VAZIO";
+            Console.WriteLine("ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE OU ESTÁ VAZIO");
         }
         
     }
 
+
+    private void CreatingButton()
+    {
+        var calcButton = new Button()
+        {
+            Margin = new Avalonia.Thickness(0, 15, 0, 15),
+            Content = "Calcular Preço"
+        };
+
+
+        calcButton.Click += CalculatePrice;
+
+
+        DataContainer.Children.Add(calcButton);
+    }
+
+
+    private void CalculatePrice(object? sender, RoutedEventArgs args)
+    {
+        Console.WriteLine("Preço calculado");
+    }
 
     #endregion
 }
