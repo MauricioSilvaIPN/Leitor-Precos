@@ -15,8 +15,10 @@
                 </Button>
             </Grid>
 
-            <Grid x:Name="DataContainer">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock x:Name="TextContent">
 
-            </Grid>
+                </TextBlock>
+            </StackPanel>
         </StackPanel>
 </Window>

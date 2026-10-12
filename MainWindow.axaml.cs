@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace LeitorPrecos;
@@ -15,10 +14,10 @@ public partial class MainWindow : Window
     }
 
     #region READ FILES
-
     public void GettingFileRead(object sender, RoutedEventArgs args)
     {
         string path = Input.Text;
+        var textReference = TextContent;
 
         if (File.Exists(path))
         {
@@ -29,13 +28,14 @@ public partial class MainWindow : Window
 
                 while (fs.Read(b, 0, b.Length) > 0)
                 {
-                    Console.WriteLine(temp.GetString(b));
+                   textReference.Text = temp.GetString(b);
                 }
             }
         }
 
         else
         {
+            textReference.Text = "ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE";
             Console.WriteLine("ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE");
         }
         
