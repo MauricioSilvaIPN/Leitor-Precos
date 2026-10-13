@@ -61,7 +61,13 @@ public partial class MainWindow : Window
 
     private void CalculatePrice(object? sender, RoutedEventArgs args)
     {
-        Console.WriteLine("Preço calculado");
+        var textReference = TextContent;
+        string[] newText = textReference.Text.Split(';');
+
+        for (int i = 0; i < newText.Length ;i++)
+        {
+            Console.WriteLine(newText[i]);
+        }
     }
 
     #endregion
