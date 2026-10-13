@@ -62,11 +62,21 @@ public partial class MainWindow : Window
     private void CalculatePrice(object? sender, RoutedEventArgs args)
     {
         var textReference = TextContent;
-        string[] newText = textReference.Text.Split(';');
+        string[] textSeparator = textReference.Text.Split(';');
 
-        for (int i = 0; i < newText.Length ;i++)
+        for (int i = 0; i < textSeparator.Length ;i++)
         {
-            Console.WriteLine(newText[i]);
+            string[] removeChar = textSeparator[i].Split('$');
+
+            for (int j = 0; j < removeChar.Length; j++)
+            {
+                string changeChar = removeChar[j].Replace(',', '.');
+                string removeSpace = changeChar.Trim( new Char[] {' '} );
+                
+
+                
+            }
+            
         }
     }
 
