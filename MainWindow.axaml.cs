@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using System;
 using System.IO;
 using System.Text;
@@ -8,6 +9,8 @@ namespace LeitorPrecos;
 
 public partial class MainWindow : Window
 {
+    private Button? calcButton;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -45,17 +48,26 @@ public partial class MainWindow : Window
 
     private void CreatingButton()
     {
-        var calcButton = new Button()
+        if (calcButton == null)
         {
-            Margin = new Avalonia.Thickness(0, 15, 0, 15),
-            Content = "Calcular Preço"
-        };
+            calcButton = new Button()
+            {
+                Margin = new Avalonia.Thickness(0, 15, 0, 15),
+                Content = "Calcular Preço"
+            };
 
 
-        calcButton.Click += CalculatePrice;
+            calcButton.Click += CalculatePrice;
+        }
 
-
-        DataContainer.Children.Add(calcButton);
+        if (!DataContainer.Children.Contains(calcButton))
+        {
+            DataContainer.Children.Add(calcButton);    
+        }
+        else
+        {
+            return;
+        }
     }
 
 
