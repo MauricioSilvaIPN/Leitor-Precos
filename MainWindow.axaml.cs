@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -10,6 +11,7 @@ namespace LeitorPrecos;
 public partial class MainWindow : Window
 {
     private Button? calcButton;
+    List<double> myPrices = new List<double>();
 
     public MainWindow()
     {
@@ -78,9 +80,27 @@ public partial class MainWindow : Window
 
         for (int i = 0; i < textSeparator.Length; i++)
         {
-            string changeChar = textSeparator[i].Replace(',', '.');
-            string removeSpace = changeChar.Trim( new Char[] {' '} );
-            //Console.WriteLine(removeSpace);
+            //string changeChar = textSeparator[i].Replace(',', '.');
+            string removeSpace = textSeparator[i].Trim( new Char[] {' '} );
+            Console.WriteLine(removeSpace);
+
+            bool isConverted = double.TryParse(removeSpace, out double result);
+            
+            
+            if (isConverted == true)
+            { 
+                myPrices.Add(result);
+            }
+            else
+            {
+                continue;
+            }
+
+        }
+
+        foreach (float j in myPrices)
+        {
+            Console.WriteLine(j);
         }
     }
 
