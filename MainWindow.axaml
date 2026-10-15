@@ -16,9 +16,9 @@
             </Grid>
 
             <StackPanel x:Name="DataContainer" HorizontalAlignment="Center">
-                <TextBlock x:Name="TextContent">
+                <ListBox x:Name="ListContent">
 
-                </TextBlock>
+                </ListBox>
             </StackPanel>
         </StackPanel>
 </Window>

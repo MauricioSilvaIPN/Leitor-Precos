@@ -22,11 +22,16 @@ public partial class MainWindow : Window
     public void GettingFileRead(object sender, RoutedEventArgs args)
     {
         string path = Input.Text;
-        var textReference = TextContent;
+        var textReference = ListContent;
 
         if (File.Exists(path))
         {
-            using (FileStream fs = File.OpenRead(path))
+            string[] allLines = File.ReadAllLines(path);
+            
+            textReference.ItemsSource = allLines;
+            CreatingButton();
+
+            /*using (FileStream fs = File.OpenRead(path))
             {
                 byte[] b = new byte[1024];
                 UTF8Encoding temp = new UTF8Encoding(true);
@@ -36,12 +41,12 @@ public partial class MainWindow : Window
                    textReference.Text = temp.GetString(b);
                    CreatingButton();
                 }
-            }
+            }*/
         }
 
         else
         {
-            textReference.Text = "ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE OU ESTÁ VAZIO";
+            textReference.ItemsSource = new string[]{"ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE OU ESTÁ VAZIO"};
             Console.WriteLine("ERRO: O CAMINHO DO ARQUIVO QUE VOCÊ DIGITOU NÃO EXISTE OU ESTÁ VAZIO");
         }
         
@@ -75,17 +80,14 @@ public partial class MainWindow : Window
 
     private void CalculatePrice(object? sender, RoutedEventArgs args)
     {
-        var textReference = TextContent;
-        string[] textSeparator = textReference.Text.Split('$');
+        var textReference = ListContent;
+        string[] textSeparator = textReference.ItemsSource.Split('$');
 
-        for (int i = 0; i < textSeparator.Length; i++)
+        /*for (int i = 0; i < textSeparator.Length; i++)
         {
-            //string changeChar = textSeparator[i].Replace(',', '.');
             string removeSpace = textSeparator[i].Trim( new Char[] {' '} );
-            Console.WriteLine(removeSpace);
 
             bool isConverted = double.TryParse(removeSpace, out double result);
-            
             
             if (isConverted == true)
             { 
@@ -98,10 +100,11 @@ public partial class MainWindow : Window
 
         }
 
-        foreach (float j in myPrices)
+        foreach (double j in myPrices)
         {
             Console.WriteLine(j);
-        }
+            Console.WriteLine(myPrices.Count);
+        }*/
     }
 
     #endregion
