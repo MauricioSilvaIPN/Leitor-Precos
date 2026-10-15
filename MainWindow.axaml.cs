@@ -81,9 +81,33 @@ public partial class MainWindow : Window
     private void CalculatePrice(object? sender, RoutedEventArgs args)
     {
         var textReference = ListContent;
-        string[] textSeparator = textReference.ItemsSource.Split('$');
+        //string[] textSeparator = textReference.ItemsSource;
 
-        /*for (int i = 0; i < textSeparator.Length; i++)
+        foreach (string itemS in textReference.ItemsSource)
+        {
+            string[] textSeparator = itemS.Split('$');
+            
+            
+            for(int i = 0; i < textSeparator.Length; i++)
+            {
+                string removeSpace = textSeparator[i].Trim( new Char[] {' '} );
+                
+                bool isConverted = double.TryParse(removeSpace, out double result);
+
+                if (isConverted)
+                {
+                    myPrices.Add(result);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+
+
+        /*for (int i = 0; i < textSeparator.Length; i++) .Split('$');
         {
             string removeSpace = textSeparator[i].Trim( new Char[] {' '} );
 
@@ -98,13 +122,13 @@ public partial class MainWindow : Window
                 continue;
             }
 
-        }
+        }*/
 
         foreach (double j in myPrices)
         {
             Console.WriteLine(j);
             Console.WriteLine(myPrices.Count);
-        }*/
+        }
     }
 
     #endregion
