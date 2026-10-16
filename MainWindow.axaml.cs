@@ -11,17 +11,19 @@ namespace LeitorPrecos;
 public partial class MainWindow : Window
 {
     private Button? calcButton;
-    List<double> myPrices = new List<double>();
+    List<double> defaultPrices = new List<double>();
+    List<double> discountPrices = new List<double>();
+    private float discount = 0.5f;
 
     public MainWindow()
     {
         InitializeComponent();
     }
 
-    #region READ FILES
+    #region FILES SOURCE
     public void GettingFileRead(object sender, RoutedEventArgs args)
     {
-        string path = Input.Text;
+        string? path = Input.Text;
         var textReference = ListContent;
 
         if (File.Exists(path))
@@ -76,16 +78,17 @@ public partial class MainWindow : Window
             return;
         }
     }
+#endregion
 
-
+#region ORGANIZE PRICES
     private void CalculatePrice(object? sender, RoutedEventArgs args)
     {
         SeparateChar();
 
-        foreach (double j in myPrices)
+        foreach (double n in defaultPrices)
         {
-            Console.WriteLine(j);
-            Console.WriteLine(myPrices.Count);
+            double newPrices = n * discount;
+            discountPrices.Add(newPrices);
         }
     }
 
@@ -107,7 +110,7 @@ public partial class MainWindow : Window
 
                 if (isConverted)
                 {
-                    myPrices.Add(result);
+                    defaultPrices.Add(result);
                 }
                 else
                 {
