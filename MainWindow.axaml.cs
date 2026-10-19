@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Metadata;
 using Avalonia.VisualTree;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,15 @@ namespace LeitorPrecos;
 public partial class MainWindow : Window
 {
     private Button? calcButton;
-    List<double> defaultPrices = new List<double>();
-    List<double> discountPrices = new List<double>();
-    private float discount = 0.5f;
+    private TextBox? discountText;
+    private float discount;
 
     public MainWindow()
     {
         InitializeComponent();
     }
 
-    #region FILES SOURCE
+#region FILES SOURCE
     public void GettingFileRead(object sender, RoutedEventArgs args)
     {
         string? path = Input.Text;
@@ -32,7 +32,7 @@ public partial class MainWindow : Window
             string[] allLines = File.ReadAllLines(path);
             
             textReference.ItemsSource = allLines;
-            CreatingButton();
+            CreatingElements();
         }
 
         else
@@ -44,7 +44,7 @@ public partial class MainWindow : Window
     }
 
 
-    private void CreatingButton()
+    private void CreatingElements()
     {
         if (calcButton == null)
         {
@@ -58,9 +58,18 @@ public partial class MainWindow : Window
             calcButton.Click += CalculatePrice;
         }
 
-        if (!DataContainer.Children.Contains(calcButton))
+        if (discountText == null)
         {
-            DataContainer.Children.Add(calcButton);    
+            discountText = new TextBox()
+            {
+                PlaceholderText = "Digite o desconto em que quer aplicar..."
+            };
+        }
+
+        if (!DataContainer.Children.Contains(calcButton) && discountText != null)
+        {
+            DataContainer.Children.Add(calcButton); 
+            DataContainer.Children.Add(discountText);
         }
         else
         {
@@ -72,9 +81,13 @@ public partial class MainWindow : Window
 #region ORGANIZE PRICES
     private void CalculatePrice(object? sender, RoutedEventArgs args)
     {
-        SeparateChar();
-        
         string? path = Input.Text;
+
+        if (discountText != null && float.TryParse(discountText.Text, out float newDiscount))
+        {
+            discount = newDiscount;
+        }
+        
 
         if (File.Exists(path))
         {
@@ -91,7 +104,8 @@ public partial class MainWindow : Window
 
                     if (double.TryParse(priceString, System.Globalization.NumberStyles.Any, new System.Globalization.CultureInfo("pt-BR"), out double originalPrice))
                     {
-                        double discountedPrice = originalPrice * discount;
+                        double firstValue = (originalPrice * discount) / 100f;
+                        double discountedPrice = originalPrice - firstValue;
 
                         string reconstructedLine = prefix + "$" + discountedPrice.ToString("F2", new System.Globalization.CultureInfo("pt-BR"));
                         
@@ -110,40 +124,20 @@ public partial class MainWindow : Window
 
             string savePath = "/home/mauricio/Downloads/novos-descontos.csv";
             File.WriteAllLines(savePath, newLines);
+
+            SucessMessage();
             Console.WriteLine("Sucesso!! Seus dados foram salvos e escrito em um novo arquivo");
         }
     }
 
-
-    private void SeparateChar()
+    private void SucessMessage()
     {
-        var textReference = ListContent;
-
-        if (textReference.ItemsSource != null)
+        var sucessText = new TextBlock()
         {
-            foreach (string itemS in textReference.ItemsSource)
-            {
-                string[] textSeparator = itemS.Split('$');
-                
-                
-                for(int i = 0; i < textSeparator.Length; i++)
-                {
-                    string removeSpace = textSeparator[i].Trim( new Char[] {' '} );
-                    
-                    bool isConverted = double.TryParse(removeSpace, out double result);
+            Text = "Sucesso!! Seus dados foram salvos e escrito em um novo arquivo"
+        };
 
-                    if (isConverted)
-                    {
-                        defaultPrices.Add(result);
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-            }
-        }
+        DataContainer.Children.Add(sucessText);
     }
-
-    #endregion
+#endregion
 }
