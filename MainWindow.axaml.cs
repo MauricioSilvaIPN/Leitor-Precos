@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using System;
 using System.Collections.Generic;
+using System.Formats.Tar;
 using System.IO;
 using System.Text;
 
@@ -32,18 +33,6 @@ public partial class MainWindow : Window
             
             textReference.ItemsSource = allLines;
             CreatingButton();
-
-            /*using (FileStream fs = File.OpenRead(path))
-            {
-                byte[] b = new byte[1024];
-                UTF8Encoding temp = new UTF8Encoding(true);
-
-                while (fs.Read(b, 0, b.Length) > 0)
-                {
-                   textReference.Text = temp.GetString(b);
-                   CreatingButton();
-                }
-            }*/
         }
 
         else
@@ -84,11 +73,44 @@ public partial class MainWindow : Window
     private void CalculatePrice(object? sender, RoutedEventArgs args)
     {
         SeparateChar();
+        
+        string? path = Input.Text;
 
-        foreach (double n in defaultPrices)
+        if (File.Exists(path))
         {
-            double newPrices = n * discount;
-            discountPrices.Add(newPrices);
+            string[] allLines = File.ReadAllLines(path);
+            List<string> newLines = new List<string>();
+
+            foreach(string line in allLines)
+            {
+                if (line.Contains('$'))
+                {
+                    string[] parts = line.Split('$');
+                    string prefix = parts[0];
+                    string priceString = parts[1].Trim( new Char[] {' '} );
+
+                    if (double.TryParse(priceString, System.Globalization.NumberStyles.Any, new System.Globalization.CultureInfo("pt-BR"), out double originalPrice))
+                    {
+                        double discountedPrice = originalPrice * discount;
+
+                        string reconstructedLine = prefix + "$" + discountedPrice.ToString("F2", new System.Globalization.CultureInfo("pt-BR"));
+                        
+                        newLines.Add(reconstructedLine);
+                    }
+                    else
+                    {
+                        newLines.Add(line);
+                    }
+                }
+                else
+                {
+                    newLines.Add(line);
+                }
+            }
+
+            string savePath = "/home/mauricio/Downloads/novos-descontos.csv";
+            File.WriteAllLines(savePath, newLines);
+            Console.WriteLine("Sucesso!! Seus dados foram salvos e escrito em um novo arquivo");
         }
     }
 
@@ -97,24 +119,27 @@ public partial class MainWindow : Window
     {
         var textReference = ListContent;
 
-        foreach (string itemS in textReference.ItemsSource)
+        if (textReference.ItemsSource != null)
         {
-            string[] textSeparator = itemS.Split('$');
-            
-            
-            for(int i = 0; i < textSeparator.Length; i++)
+            foreach (string itemS in textReference.ItemsSource)
             {
-                string removeSpace = textSeparator[i].Trim( new Char[] {' '} );
+                string[] textSeparator = itemS.Split('$');
                 
-                bool isConverted = double.TryParse(removeSpace, out double result);
+                
+                for(int i = 0; i < textSeparator.Length; i++)
+                {
+                    string removeSpace = textSeparator[i].Trim( new Char[] {' '} );
+                    
+                    bool isConverted = double.TryParse(removeSpace, out double result);
 
-                if (isConverted)
-                {
-                    defaultPrices.Add(result);
-                }
-                else
-                {
-                    continue;
+                    if (isConverted)
+                    {
+                        defaultPrices.Add(result);
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
             }
         }
