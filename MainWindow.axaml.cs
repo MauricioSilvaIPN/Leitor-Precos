@@ -122,7 +122,7 @@ public partial class MainWindow : Window
                 }
             }
 
-            string savePath = "/home/mauricio/Downloads/novos-descontos.csv";
+            string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "novos-descontos.csv");
             File.WriteAllLines(savePath, newLines);
 
             SucessMessage();
