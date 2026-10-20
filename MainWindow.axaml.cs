@@ -68,8 +68,8 @@ public partial class MainWindow : Window
 
         if (!DataContainer.Children.Contains(calcButton) && discountText != null)
         {
-            DataContainer.Children.Add(calcButton); 
             DataContainer.Children.Add(discountText);
+            DataContainer.Children.Add(calcButton); 
         }
         else
         {
