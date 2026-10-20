@@ -64,6 +64,8 @@ public partial class MainWindow : Window
             {
                 PlaceholderText = "Digite o desconto em que quer aplicar..."
             };
+
+            discountText.KeyDown += TextBox_KeyDown;
         }
 
         if (!DataContainer.Children.Contains(calcButton) && discountText != null)
@@ -126,7 +128,7 @@ public partial class MainWindow : Window
             File.WriteAllLines(savePath, newLines);
 
             SucessMessage();
-            Console.WriteLine("Sucesso!! Seus dados foram salvos e escrito em um novo arquivo");
+            Console.WriteLine("Sucesso!! Seus dados foram salvos e escritos em um novo arquivo");
         }
     }
 
@@ -134,10 +136,29 @@ public partial class MainWindow : Window
     {
         var sucessText = new TextBlock()
         {
-            Text = "Sucesso!! Seus dados foram salvos e escrito em um novo arquivo"
+            Text = "Sucesso!! Seus dados foram salvos e escritos em um novo arquivo"
         };
 
         DataContainer.Children.Add(sucessText);
     }
-#endregion
+#endregion    
+
+private void TextBox_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
+    {
+        if (e.Key == Avalonia.Input.Key.Back || 
+            e.Key == Avalonia.Input.Key.Delete ||
+            e.Key == Avalonia.Input.Key.Left || 
+            e.Key == Avalonia.Input.Key.Right ||
+            e.Key == Avalonia.Input.Key.Tab)
+        {
+            return;
+        }
+
+        string? letter = e.KeySymbol;
+
+        if (string.IsNullOrEmpty(letter) || !char.IsDigit(letter[0]))
+        {
+            e.Handled = true;
+        }
+    }
 }
