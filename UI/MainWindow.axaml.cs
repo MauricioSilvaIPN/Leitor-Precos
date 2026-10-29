@@ -69,7 +69,7 @@ public partial class MainWindow : Window
 
         if (discountText != null)
         {
-           sheetRead.CalculatePrice(InputBox, discountText);
+            sheetRead.CalculatePrice(InputBox, discountText);
             SucessMessage();
             Console.WriteLine("Sucesso!! Seus dados foram salvos e escritos em um novo arquivo");    
         }
